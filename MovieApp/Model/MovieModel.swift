@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct MovieDBResponse: Codable {
+struct MovieDBResponse: Hashable,Codable {
     let page: Int
     let results: [MovieResult]
     let total_pages: Int
     let total_results: Int
 }
 
-struct MovieResult: Codable {
+struct MovieResult: Hashable,Codable {
     let adult: Bool?
     let backdrop_path: String?
     let genre_ids: [Int]?

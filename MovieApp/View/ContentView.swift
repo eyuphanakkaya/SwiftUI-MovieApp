@@ -9,28 +9,44 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
+        
         ZStack {
+            
             TabView {
-                MovieHomePage( ara: "")
+               MovieHomePage(viewModel: MovieDBViewModel(), ara: "")
                     .tabItem {
                         Image(systemName: "house")
                         Text("Home")
                     }
+                    .toolbar(.visible, for: .tabBar)
+                    .toolbarBackground(Color("background"), for: .tabBar)
+                    
                 
                 MovieSearchPage()
                     .tabItem {
                         Image(systemName: "magnifyingglass")
                         Text("Search")
+                        
+                        
                     }
+                    .toolbar(.visible, for: .tabBar)
+                    .toolbarBackground(Color("background"), for: .tabBar)
                 MovieFavPage()
                     .tabItem {
                         Image(systemName: "bookmark")
                         Text("Watch list")
                     }
+                    .toolbar(.visible, for: .tabBar)
+                    .toolbarBackground(Color("background"), for: .tabBar)
+    
             }
-            .background(Color.blue)
           
+            
+            
         }
+        
+       
+      
        
        
         

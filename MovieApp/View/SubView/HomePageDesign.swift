@@ -6,22 +6,20 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct HomePageDesign: View {
+    @ObservedObject var viewModel: MovieDBViewModel
+   
     var body: some View {
-        VStack {
-            Image("alya")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 145,height: 210)
-                .cornerRadius(16)
-        }
+        
+        Text("")
         
     }
 }
 
 struct HomePageDesign_Previews: PreviewProvider {
     static var previews: some View {
-        HomePageDesign()
+        HomePageDesign(viewModel: MovieDBViewModel())
     }
 }
