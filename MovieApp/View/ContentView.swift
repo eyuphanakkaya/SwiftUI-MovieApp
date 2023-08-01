@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var viewModel = MovieDBViewModel()
     var body: some View {
-        
         ZStack {
             
             TabView {
-               MovieHomePage(viewModel: MovieDBViewModel(), ara: "")
+               MovieHomePage(viewModel: viewModel, ara: "")
                     .tabItem {
                         Image(systemName: "house")
                         Text("Home")
@@ -31,7 +31,7 @@ struct ContentView: View {
                     }
                     .toolbar(.visible, for: .tabBar)
                     .toolbarBackground(Color("background"), for: .tabBar)
-                MovieFavPage()
+                MovieFavPage(viewModel: viewModel)
                     .tabItem {
                         Image(systemName: "bookmark")
                         Text("Watch list")

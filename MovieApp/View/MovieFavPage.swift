@@ -8,13 +8,26 @@
 import SwiftUI
 
 struct MovieFavPage: View {
+    @State var detail: MovieDetail?
+    @ObservedObject var viewModel: MovieDBViewModel
     var body: some View {
-        Text("Watch List")
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.flexible())],spacing: 20) {
+                ForEach(viewModel.favList,id: \.self) { data in
+                    FavPageDesign(movie: data)
+                }
+            }
+        }
+        .onAppear{
+          
+        }
+        
+
     }
 }
 
 struct MovieFavPage_Previews: PreviewProvider {
     static var previews: some View {
-        MovieFavPage()
+        MovieFavPage(viewModel: MovieDBViewModel())
     }
 }

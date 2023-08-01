@@ -31,4 +31,18 @@ struct MovieResult: Hashable,Codable {
     let vote_count: Int?
 }
 
+struct MovieDetail: Codable,Hashable {
+    let genres: [Genres]
+    let id: Int
+    let runtime: Int
+    let original_title: String
+    let poster_path: String
+    let release_date: String
+    
+    
+}
+struct Genres: Hashable,Codable {
+    let id: Int
+    let name: String
+}
 
