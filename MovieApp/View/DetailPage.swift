@@ -25,6 +25,7 @@ struct DetailPage: View {
                 ,let runTime = movieDetail?.runtime
                 ,let genres = movieDetail?.genres
                 ,let overview = movie.overview {
+                
                 ZStack {
                     KFImage(URL(string: "https://image.tmdb.org/t/p/w500\(backDrop)"))
                         .resizable()

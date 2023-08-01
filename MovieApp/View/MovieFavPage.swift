@@ -14,13 +14,12 @@ struct MovieFavPage: View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible())],spacing: 20) {
                 ForEach(viewModel.favList,id: \.self) { data in
-                    FavPageDesign(movie: data)
+                    FavPageDesign(viewModel: viewModel, movie: data)
                 }
             }
         }
-        .onAppear{
-          
-        }
+        .background(Color("background"))
+
         
 
     }
