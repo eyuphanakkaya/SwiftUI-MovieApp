@@ -10,107 +10,13 @@ import Kingfisher
 
 struct DetailPage: View {
     @State var movie: MovieResult
-    @State var movieDetail: MovieDetail?
     @State var favState: Bool
     @ObservedObject var viewModel: MovieDBViewModel
     
     var body: some View {
         
         VStack {
-            if let backDrop = movie.backdrop_path
-                ,let poster = movie.poster_path
-                ,let title = movie.title
-                ,let average = movie.vote_average
-                ,let date = movie.release_date
-                ,let runTime = movieDetail?.runtime
-                ,let genres = movieDetail?.genres
-                ,let overview = movie.overview {
-                
-                ZStack {
-                    KFImage(URL(string: "https://image.tmdb.org/t/p/w500\(backDrop)"))
-                        .resizable()
-                        .frame(width: 400,height: 210)
-                        .padding(.top, 16)
-                        .cornerRadius(16)
-                        .padding(.top, -16)
-                    
-                }
-                .padding(.top,40)
-                HStack {
-                    KFImage(URL(string: "https://image.tmdb.org/t/p/w500\(poster)"))
-                        .resizable()
-                        .frame(width: 90,height: 130)
-                        .scaledToFit()
-                        .cornerRadius(16)
-                        .offset(x: 30,y: -60)
-                    
-                    VStack{
-                        Image(systemName: "star")
-                        Text(String(format: "%.1f", average))
-                            .font(.system(size: 15))
-                            .bold()
-                        
-                    }
-                    .offset(x:250,y:-90)
-                    .foregroundColor(.white)
-                    Text(title)
-                        .frame(width: 250, height: 70)
-                        .font(Font.custom("Helvetica", size: 20))
-                        .bold()
-                        .foregroundColor(.white)
-                        .offset(x: -10,y:-35)
-                    
-                }
-                HStack {
-                    Image(systemName: "calendar.circle")
-                    Text("\(date.prefix(4).description) |")
-                    
-                    Image(systemName: "hourglass.circle")
-                    Text("\(runTime) |")
-                    Image(systemName: "ticket")
-                    let tur = genres.first
-                    Text(tur?.name ?? "")
-                }
-                .foregroundColor(.gray)
-                .frame(width: 300,height: 32)
-                .font(Font.custom("Helvetica", size: 16))
-                .padding()
-                .offset(y:-60)
-                ScrollView(.horizontal) {
-                    HStack(spacing: 50) {
-                        Button {
-                            //  viewModel.loadNowPlaying()
-                        } label: {
-                            Text("About Movie")
-                                .foregroundColor(.white)
-                        }
-                        
-                        .padding(.leading,20)
-                        Button {
-                            //  viewModel.loadUpComing()
-                        } label: {
-                            Text("Reviews")
-                                .foregroundColor(.white)
-                        }
-                        Button {
-                            // viewModel.loadPopular()
-                            
-                        } label: {
-                            Text("Cast")
-                                .foregroundColor(.white)
-                        }
-                    }
-                    
-                    
-                }
-                .offset(y:-70)
-                .padding()
-                Text(overview)
-                    .frame(width: 317,height: 200)
-                    .offset(y:-100)
-                    .foregroundColor(.white)
-                    .padding(.top,20)
-            }
+            DetailPageDesign(viewModel: viewModel, movie: movie )
             
         }
         .navigationTitle("Detail")
@@ -121,9 +27,12 @@ struct DetailPage: View {
                     viewModel.favList.append(movie)
                     print("eklendi")
                 } else {
-                   print("sil")
+                    if let removeMovie = viewModel.favList.firstIndex(of: movie) {
+                        viewModel.favList.remove(at: removeMovie)
+                    }
+                    print("sil")
                 }
-               
+                
             } label: {
                 if favState {
                     Image(systemName: "bookmark.fill")
@@ -142,8 +51,10 @@ struct DetailPage: View {
         }
         
         .onAppear{
-            viewModel.getMovieDetail(id: movie.id ?? 0) { result in
-                self.movieDetail = result
+            if viewModel.favList.contains(where: {$0.id == movie.id}) {
+                favState = true
+            } else {
+                favState = false
             }
             
         }

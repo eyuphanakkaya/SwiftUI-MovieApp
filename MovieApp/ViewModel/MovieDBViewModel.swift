@@ -21,6 +21,8 @@ class MovieDBViewModel: ObservableObject {
     @Published var nowPlayinList = [MovieDBResponse]()
     @Published var populerList = [MovieDBResponse]()
     @Published var searchList = [MovieDBResponse]()
+    @Published var detailList = [MovieDetail]()
+//    @Published var actorList = [Actors]()
     
     func loadTrending() {
         urlSessionGet(apiKeys: "\(apiCaller.url)trending/movie/day?api_key=\(apiCaller.apiKey)"){ result in
@@ -54,11 +56,22 @@ class MovieDBViewModel: ObservableObject {
             self.searchList.append(result)
         }
     }
+//    func loadActor(id: Int) {
+//        fetchActors(id: id) { result in
+//            self.actorList.append(result)
+//
+//        }
+//    }
+    func loadDetail(id: Int) {
+        getMovieDetail(id: id) { result in
+            self.detailList.append(result)
+        }
+    }
 
     //https://api.themoviedb.org/3/movie/457332?api_key=27126981b38143d748b09c881c9a3159
     
     func getMovieDetail(id: Int,completion: @escaping(MovieDetail)-> Void) {
-        let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)?api_key=27126981b38143d748b09c881c9a3159")
+        let url = URL(string: "\(apiCaller.url)movie/\(id)?api_key=\(apiCaller.apiKey)")
         if let incomingUrl = url {
             URLSession.shared.dataTask(with: incomingUrl) { data, response, error in
                 guard error != nil || data != nil else{return}
@@ -68,6 +81,24 @@ class MovieDBViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         completion(result)
                     }
+                } catch {
+                    print(error)
+                }
+            }.resume()
+        }
+    }
+    func fetchActors(id: Int,completion: @escaping(Actors)-> Void) {
+        let url = URL(string: "\(apiCaller.url)movie/\(id)/credits?api_key=\(apiCaller.apiKey)")
+        if let incomingUrl = url {
+            URLSession.shared.dataTask(with: incomingUrl) { data, response, error in
+                guard error != nil || data != nil else{
+                    print(error)
+                    return
+                }
+                do {
+                    let result = try JSONDecoder().decode(Actors.self, from: data!)
+                   // self.actorList.append(result)
+                    completion(result)
                 } catch {
                     print(error)
                 }

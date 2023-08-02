@@ -11,14 +11,21 @@ struct MovieFavPage: View {
     @State var detail: MovieDetail?
     @ObservedObject var viewModel: MovieDBViewModel
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible())],spacing: 20) {
-                ForEach(viewModel.favList,id: \.self) { data in
-                    FavPageDesign(viewModel: viewModel, movie: data)
+        NavigationView {
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.flexible())],spacing: 20) {
+                    ForEach(viewModel.favList,id: \.self) { data in
+                        NavigationLink(destination: DetailPage(movie: data, favState: false, viewModel: viewModel)) {
+                            FavPageDesign(viewModel: viewModel, movie: data)
+                        }
+                        
+                    }
                 }
             }
+            .background(Color("background"))
+            
         }
-        .background(Color("background"))
+        
 
         
 

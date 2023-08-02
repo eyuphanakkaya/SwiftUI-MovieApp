@@ -10,11 +10,15 @@ import Kingfisher
 
 struct HomePageDesign: View {
     @ObservedObject var viewModel: MovieDBViewModel
-   
+    var movie: MovieResult?
     var body: some View {
-        
-        Text("")
-        
+        if let poster = movie?.poster_path {
+            KFImage(URL(string: "https://image.tmdb.org/t/p/w500\(poster)"))
+                .resizable()
+                .scaledToFit()
+                .frame(width: 145, height: 210)
+                .cornerRadius(16)
+        }
     }
 }
 

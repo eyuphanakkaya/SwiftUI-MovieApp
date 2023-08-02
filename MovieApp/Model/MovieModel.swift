@@ -45,4 +45,13 @@ struct Genres: Hashable,Codable {
     let id: Int
     let name: String
 }
+struct Actors: Codable,Hashable {
+    let id: Int?
+    let cast: [Cast]?
+}
+struct Cast: Codable,Hashable{
+    let id: Int?
+    let name: String?
+    let profile_path: String?
+}
 

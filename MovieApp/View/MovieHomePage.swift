@@ -10,9 +10,6 @@ import Kingfisher
 
 struct MovieHomePage: View {
     
-    @State private var nowPlay: [MovieDBResponse] = []
-    @State private var upComing: [MovieDBResponse] = []
-    @State private var popular: [MovieDBResponse] = []
     @State var selected: MovieDBResponse?
     @ObservedObject var viewModel: MovieDBViewModel
     @State var ara: String
@@ -28,15 +25,8 @@ struct MovieHomePage: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: 10) {
                         ForEach(viewModel.trendList.flatMap(\.results),id: \.self) { movie in
-                            if let gelenPoster = movie.poster_path {
                                 NavigationLink(destination: DetailPage(movie: movie, favState: false, viewModel: viewModel)) {
-                                    KFImage(URL(string: "https://image.tmdb.org/t/p/w500\(gelenPoster)"))
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 145, height: 210)
-                                        .cornerRadius(16)
-
-                                }
+                                    HomePageDesign(viewModel: viewModel,movie: movie)
                                 
                             }
 
@@ -62,6 +52,7 @@ struct MovieHomePage: View {
                         }
                         Button {
                             viewModel.loadPopular()
+                           
                             
                         } label: {
                             Text("Popular")
@@ -72,7 +63,7 @@ struct MovieHomePage: View {
                 .padding()
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible())]) {
-                        DetailPageDesign(viewModel: viewModel)
+                        SubTitlePageDesign(viewModel: viewModel)
                     }
                 }
                 
@@ -81,7 +72,6 @@ struct MovieHomePage: View {
         }
         
         .onAppear{
-
             viewModel.loadTrending()
         }
         

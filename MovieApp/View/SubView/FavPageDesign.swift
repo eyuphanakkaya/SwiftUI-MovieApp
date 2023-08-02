@@ -19,6 +19,7 @@ struct FavPageDesign: View {
             ,let poster = movie?.poster_path
         {
             HStack {
+
                 KFImage(URL(string: "https://image.tmdb.org/t/p/w500\(poster)"))
                     .resizable()
                     .frame(width: 100,height: 150)
