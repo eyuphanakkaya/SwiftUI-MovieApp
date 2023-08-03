@@ -20,6 +20,7 @@ struct DetailPage: View {
             
         }
         .navigationTitle("Detail")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar{
             Button {
                 favState.toggle()
@@ -51,6 +52,7 @@ struct DetailPage: View {
         }
         
         .onAppear{
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.init(.white)]
             if viewModel.favList.contains(where: {$0.id == movie.id}) {
                 favState = true
             } else {

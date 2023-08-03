@@ -6,53 +6,65 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MovieSearchPage: View {
+    @ObservedObject var viewModel: MovieDBViewModel
+    @State var searchList = [MovieResult]()
     @State var search = ""
+    var searchResult: [MovieResult] {
+        return searchList.filter{$0.original_title!.localizedCaseInsensitiveContains(search)}
+    }
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible())]) {
-                HStack {
-                    Image("resim")
-                        .resizable()
-                        .frame(width: 100,height: 150)
-                        .cornerRadius(16)
-                    VStack(alignment: .leading) {
-                        Text("Spiderman")
-                            .padding(.leading,20)
-                        HStack {
-                            Image(systemName: "star")
-                            Text(String(format: "%.1f",  ""))
-                                .font(.system(size: 15))
-                                .bold()
-                               
-                        }
-                        HStack {
-                            Image(systemName: "ticket")
-                            Text("Action")
-                            
-                        }
-                        HStack {
-                            Image(systemName: "calendar.circle")
-                            Text("2021")
-                        }
-                        HStack {
-                            Image(systemName: "hourglass.circle")
-                            Text("139 minutes")
+        
+        NavigationStack {
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.flexible())],spacing: 20) {
+                    ForEach(searchResult.prefix(30),id: \.self) { data in
+                        SearchPageDesign(viewModel: viewModel, aramaYap: data)
+                    }
+   
+                }
+            }
+            .background(Color("background"))
+            .navigationTitle("Search Movie")
+        }
+        
+        .searchable(text: $search,prompt: "Search Movies")
+        .onAppear{
+            UISearchBar.appearance().barTintColor = UIColor.white
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.init(.white)]
+          
+
+        }
+        .onChange(of: search) { newSearch in
+            if !newSearch.isEmpty {
+                viewModel.fetchSearchMovie(search: newSearch) { result in
+                    for x in result {
+                        if !searchList.contains{$0.id == x.id} {
+                            searchList.append(contentsOf: result)
+                        } else {
+                            return
                         }
                     }
-                    
+                   
+                    print(searchResult)
                 }
-               
-                .frame(width: 305,height: 120,alignment: .leading)
-                .padding(.top,20)
+            } else {
+                print("Hata")
             }
-        } .searchable(text: $search)
+            
+        }
+        
+        
     }
+    
 }
+
+
 
 struct MovieSearchPage_Previews: PreviewProvider {
     static var previews: some View {
-        MovieSearchPage()
+        MovieSearchPage(viewModel: MovieDBViewModel())
     }
 }

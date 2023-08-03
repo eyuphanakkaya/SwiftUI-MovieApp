@@ -66,8 +66,8 @@ struct DetailPageDesign: View {
                 Text("\(movieDetail?.runtime ?? 0) minutes |")
                 Image(systemName: "ticket")
                 
-                if  let tur = movieDetail?.genres.first {
-                    Text(tur.name)
+                if  let tur = movieDetail?.genres?.first {
+                    Text(tur.name ?? "")
                 }
                 
             }

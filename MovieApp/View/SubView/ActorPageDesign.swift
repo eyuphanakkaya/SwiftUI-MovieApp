@@ -48,7 +48,6 @@ struct ActorPageDesign: View {
         .background(Color("background"))
         .edgesIgnoringSafeArea(.all)
         .onAppear{
-            print("hellooooo")
             viewModel.fetchActors(id: movie?.id ?? 0) { result in
                 self.actors = result
                

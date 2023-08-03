@@ -44,7 +44,7 @@ struct FavPageDesign: View {
                         Image(systemName: "ticket")
                             .resizable()
                             .frame(width: 16,height: 16)
-                        let tur = movieDetail?.genres.first
+                        let tur = movieDetail?.genres?.first
                         Text(tur?.name ?? "" )
                     }
                     .frame(width: 120,height: 18,alignment: .leading)
@@ -73,7 +73,6 @@ struct FavPageDesign: View {
             .padding(.top,20)
             .onAppear{
                 viewModel.getMovieDetail(id: movie?.id ?? 0) { detail in
-                    print("DETAYYYY\(detail)")
                         self.movieDetail = detail
                 }
             }

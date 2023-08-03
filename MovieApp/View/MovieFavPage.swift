@@ -21,8 +21,11 @@ struct MovieFavPage: View {
                         
                     }
                 }
+               
             }
             .background(Color("background"))
+            
+        }.onAppear{
             
         }
         

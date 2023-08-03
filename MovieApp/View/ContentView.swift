@@ -13,7 +13,7 @@ struct ContentView: View {
         ZStack {
             
             TabView {
-               MovieHomePage(viewModel: viewModel, ara: "")
+               MovieHomePage(viewModel: viewModel)
                     .tabItem {
                         Image(systemName: "house")
                         Text("Home")
@@ -22,7 +22,7 @@ struct ContentView: View {
                     .toolbarBackground(Color("background"), for: .tabBar)
                     
                 
-                MovieSearchPage()
+                MovieSearchPage(viewModel: viewModel)
                     .tabItem {
                         Image(systemName: "magnifyingglass")
                         Text("Search")

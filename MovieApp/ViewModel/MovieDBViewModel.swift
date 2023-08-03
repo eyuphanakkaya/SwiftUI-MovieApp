@@ -20,7 +20,6 @@ class MovieDBViewModel: ObservableObject {
     @Published var upcomingList = [MovieDBResponse]()
     @Published var nowPlayinList = [MovieDBResponse]()
     @Published var populerList = [MovieDBResponse]()
-    @Published var searchList = [MovieDBResponse]()
     @Published var detailList = [MovieDetail]()
 //    @Published var actorList = [Actors]()
     
@@ -45,26 +44,33 @@ class MovieDBViewModel: ObservableObject {
         }
     }
     func loadPopular(){
-        urlSessionGet(apiKeys: "\(apiCaller.url)movie/popular?api_key=\(apiCaller.apiKey)&limit=6") {result in
+        urlSessionGet(apiKeys: "\(apiCaller.url)movie/popular?api_key=\(apiCaller.apiKey)&limit=6"){result in
             self.populerList.append(result)
             self.liste = self.populerList
+            
         }
     }
     //https://api.themoviedb.org/3/search/movie?query=Barbie&api_key=27126981b38143d748b09c881c9a3159
-    func searchMovie(search: String){
-        urlSessionGet(apiKeys: "\(apiCaller.url)search/movie?query=\(search)&api_key=\(apiCaller.apiKey)") {result in
-            self.searchList.append(result)
-        }
-    }
-//    func loadActor(id: Int) {
-//        fetchActors(id: id) { result in
-//            self.actorList.append(result)
-//
-//        }
-//    }
     func loadDetail(id: Int) {
         getMovieDetail(id: id) { result in
             self.detailList.append(result)
+        }
+    }
+    func fetchSearchMovie(search: String,completion: @escaping([MovieResult])-> Void) {
+        let url = URL(string: "\(apiCaller.url)search/movie?query=\(search)&api_key=\(apiCaller.apiKey)")
+        if let incomingUrl = url {
+            URLSession.shared.dataTask(with: incomingUrl) { data, response, error in
+                guard error != nil || data != nil else{return}
+                do {
+                    let result = try JSONDecoder().decode(MovieDBResponse.self, from: data!)
+                   // print(result)
+                    DispatchQueue.main.async {
+                        completion(result.results)
+                    }
+                } catch {
+                    print(error)
+                }
+            }.resume()
         }
     }
 
@@ -77,7 +83,6 @@ class MovieDBViewModel: ObservableObject {
                 guard error != nil || data != nil else{return}
                 do {
                     let result = try JSONDecoder().decode(MovieDetail.self, from: data!)
-                    print(result)
                     DispatchQueue.main.async {
                         completion(result)
                     }
