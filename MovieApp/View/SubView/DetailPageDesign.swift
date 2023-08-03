@@ -121,7 +121,8 @@ struct DetailPageDesign: View {
                     .foregroundColor(.white)
                     .padding(.top,20)
             case 2:
-                Text("Yorumlar")
+                ReviewsPageDesign()
+                    .offset(y:-60)
             case 3:
                 ActorPageDesign(viewModel: viewModel,movie: movie)
                     .frame(width: 350,height: 200)

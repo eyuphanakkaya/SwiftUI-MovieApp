@@ -27,7 +27,7 @@ struct ActorPageDesign: View {
                                     KFImage(URL(string: "https://image.tmdb.org/t/p/w500\(image)"))
                                         .resizable()
                                         .clipShape(Circle())
-                                        .frame(width: 100,height: 100)
+                                        .frame(width: 85,height: 100)
                                 }
                             }
                             .padding(.bottom,20)

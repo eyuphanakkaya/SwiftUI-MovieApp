@@ -21,7 +21,6 @@ class MovieDBViewModel: ObservableObject {
     @Published var nowPlayinList = [MovieDBResponse]()
     @Published var populerList = [MovieDBResponse]()
     @Published var detailList = [MovieDetail]()
-//    @Published var actorList = [Actors]()
     
     func loadTrending() {
         urlSessionGet(apiKeys: "\(apiCaller.url)trending/movie/day?api_key=\(apiCaller.apiKey)"){ result in
@@ -73,9 +72,6 @@ class MovieDBViewModel: ObservableObject {
             }.resume()
         }
     }
-
-    //https://api.themoviedb.org/3/movie/457332?api_key=27126981b38143d748b09c881c9a3159
-    
     func getMovieDetail(id: Int,completion: @escaping(MovieDetail)-> Void) {
         let url = URL(string: "\(apiCaller.url)movie/\(id)?api_key=\(apiCaller.apiKey)")
         if let incomingUrl = url {
@@ -109,6 +105,29 @@ class MovieDBViewModel: ObservableObject {
                 }
             }.resume()
         }
+    }
+    func fetchReviews(id: Int,completion: @escaping([ReviewsPersons])-> Void) {
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)/reviews?api_key=27126981b38143d748b09c881c9a3159")
+        guard let incomingUrl = url else{
+            print("HATAAA")
+            return
+        }
+        URLSession.shared.dataTask(with: incomingUrl) { data, response, error in
+            guard error != nil || data != nil else {
+                print("HATAAAA= \(error)")
+                return
+                
+            }
+            do {
+                let result = try JSONDecoder().decode(Reviews.self, from: data!)
+                DispatchQueue.main.async {
+                   
+                    completion(result.results)
+                }
+            } catch {
+                print(error)
+            }
+        }.resume()
     }
     func urlSessionGet(apiKeys: String, completion: @escaping(MovieDBResponse)-> Void) {
         let url = URL(string: apiKeys)

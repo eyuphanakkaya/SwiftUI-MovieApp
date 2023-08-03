@@ -111,6 +111,9 @@ struct MovieHomePage: View {
         .onAppear{
             UINavigationBar.appearance().tintColor = .white
             viewModel.loadTrending()
+            viewModel.fetchReviews(id: 346698) { result in
+              
+            }
         }
 
         

@@ -55,3 +55,14 @@ struct Cast: Codable,Hashable{
     let profile_path: String?
 }
 
+struct Reviews: Codable {
+    let id: Int?
+    let results: [ReviewsPersons]
+}
+struct ReviewsPersons: Codable {
+    let author: String?
+    let content: String?
+    let created_at: String?
+    let id: String?
+}
+

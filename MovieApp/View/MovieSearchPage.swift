@@ -47,8 +47,6 @@ struct MovieSearchPage: View {
                             return
                         }
                     }
-                   
-                    print(searchResult)
                 }
             } else {
                 print("Hata")
