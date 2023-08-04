@@ -26,7 +26,7 @@ class MovieDBViewModel: ObservableObject {
         urlSessionGet(apiKeys: "\(apiCaller.url)trending/movie/day?api_key=\(apiCaller.apiKey)"){ result in
             self.trendList.append(result)
             self.liste = self.trendList
-         
+            
         }
         
     }
@@ -62,7 +62,7 @@ class MovieDBViewModel: ObservableObject {
                 guard error != nil || data != nil else{return}
                 do {
                     let result = try JSONDecoder().decode(MovieDBResponse.self, from: data!)
-                   // print(result)
+                    // print(result)
                     DispatchQueue.main.async {
                         completion(result.results)
                     }
@@ -98,7 +98,7 @@ class MovieDBViewModel: ObservableObject {
                 }
                 do {
                     let result = try JSONDecoder().decode(Actors.self, from: data!)
-                   // self.actorList.append(result)
+                    // self.actorList.append(result)
                     completion(result)
                 } catch {
                     print(error)
@@ -121,7 +121,7 @@ class MovieDBViewModel: ObservableObject {
             do {
                 let result = try JSONDecoder().decode(Reviews.self, from: data!)
                 DispatchQueue.main.async {
-                   
+                    
                     completion(result.results)
                 }
             } catch {

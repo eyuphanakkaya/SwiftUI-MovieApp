@@ -14,6 +14,7 @@ struct DetailPageDesign: View {
     @State var movieDetail: MovieDetail?
     @State var actors: Actors?
     @State var number =  1
+    @Namespace var ns
     var body: some View {
         if let backDrop = movie.backdrop_path
             ,let poster = movie.poster_path
@@ -79,7 +80,9 @@ struct DetailPageDesign: View {
             ScrollView(.horizontal) {
                 HStack(spacing: 50) {
                     Button {
-                        self.number = 1
+                        withAnimation {
+                            self.number = 1
+                        }
                     } label: {
                         Text("About Movie")
                             .foregroundColor(.white)
@@ -87,19 +90,49 @@ struct DetailPageDesign: View {
                     
                     .padding(.leading,20)
                     Button {
-                        self.number = 2
+                        withAnimation {
+                            self.number = 2
+                        }
+                       
                     } label: {
                         Text("Reviews")
                             .foregroundColor(.white)
                     }
                     Button {
-                        self.number = 3
+                        withAnimation {
+                            self.number = 3
+                        }
+                       
                     } label: {
                         Text("Cast")
                             .foregroundColor(.white)
                     }
                 }
-                
+                switch number {
+                case 1:
+                    Rectangle()
+                        .matchedGeometryEffect(id: "animation", in: ns)
+                        .frame(width: 130,height: 5)
+                        .offset(x: -110)
+                        .padding(.leading)
+                case 2:
+                    Rectangle()
+                        .matchedGeometryEffect(id: "animation", in: ns)
+                        .frame(width: 75,height: 5)
+                        .offset(x: 45)
+                        
+                case 3:
+                    Rectangle()
+                        .matchedGeometryEffect(id: "animation", in: ns)
+                        .frame(width: 65,height: 5)
+                        .offset(x: 150)
+                       
+                        
+                        
+
+                default:
+                    Text("Hata")
+                }
                 
             }
             .onAppear{
@@ -109,7 +142,7 @@ struct DetailPageDesign: View {
                 viewModel.fetchActors(id: movie.id ?? 0) { actors in
                     self.actors = actors
                 }
-               
+                
             }
             .offset(y:-70)
             .padding()
@@ -121,7 +154,7 @@ struct DetailPageDesign: View {
                     .foregroundColor(.white)
                     .padding(.top,20)
             case 2:
-                ReviewsPageDesign()
+                ReviewsPageDesign(viewModel: viewModel,movie: movie)
                     .offset(y:-60)
             case 3:
                 ActorPageDesign(viewModel: viewModel,movie: movie)
@@ -130,7 +163,7 @@ struct DetailPageDesign: View {
             default:
                 Text("")
             }
-           
+            
         }
     }
     

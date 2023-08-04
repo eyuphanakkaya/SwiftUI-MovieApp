@@ -55,11 +55,11 @@ struct Cast: Codable,Hashable{
     let profile_path: String?
 }
 
-struct Reviews: Codable {
+struct Reviews: Codable,Hashable {
     let id: Int?
     let results: [ReviewsPersons]
 }
-struct ReviewsPersons: Codable {
+struct ReviewsPersons: Codable,Hashable {
     let author: String?
     let content: String?
     let created_at: String?

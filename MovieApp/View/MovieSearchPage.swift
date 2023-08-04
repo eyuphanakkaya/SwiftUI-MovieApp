@@ -23,19 +23,18 @@ struct MovieSearchPage: View {
                     ForEach(searchResult.prefix(30),id: \.self) { data in
                         SearchPageDesign(viewModel: viewModel, aramaYap: data)
                     }
-   
+                    
                 }
             }
             .background(Color("background"))
             .navigationTitle("Search Movie")
         }
-        
         .searchable(text: $search,prompt: "Search Movies")
         .onAppear{
             UISearchBar.appearance().barTintColor = UIColor.white
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.init(.white)]
-          
-
+            
+            
         }
         .onChange(of: search) { newSearch in
             if !newSearch.isEmpty {
